@@ -1,28 +1,243 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div
+    class="min-h-screen max-h-full bg-custom-background"
+    @click="isFlagOpen = false"
+  >
+    <div class="container mx-auto py-16">
+      <div class="flex flex-col justify-center items-center">
+        <span class="text-6xl text-white">Matics</span>
+        <span class="text-green-500 pb-4">Mager Ngetics</span>
+        <div class="flex flex-col w-1/2">
+          <textarea
+            ref="noteref"
+            v-model="note"
+            rows="14"
+            class="
+              rounded-2xl
+              bg-custom-field
+              py-3
+              shadow-custom
+              text-sm
+              resize-none
+              border-none
+              focus:ring-transparent
+              font-mono
+            "
+          >
+          </textarea>
+          <div class="px-2 pt-3">
+            <button
+              class="w-full text-white font-bold py-2 rounded-md"
+              :class="
+                isListening
+                  ? ['bg-red-500', 'hover:bg-red-400']
+                  : ['bg-green-500', 'hover:bg-green-400']
+              "
+              @click="onListen"
+            >
+              {{ isListening ? "Stop" : "Start" }}
+            </button>
+          </div>
+          <div class="flex flex-row space-x-3 px-2 pt-2">
+            <div class="relative">
+              <button
+                @click.stop="isFlagOpen = !isFlagOpen"
+                class="
+                  relative
+                  z-10
+                  flex
+                  bg-custom-field
+                  p-2
+                  focus:outline-none
+                "
+                :class="isFlagOpen == true ? ['rounded-t-md'] : ['rounded-md']"
+              >
+                <div class="w-6 h-6">
+                  <img
+                    v-if="lang == 'id'"
+                    src="@/assets/flags/id.png"
+                    alt=""
+                    srcset=""
+                  />
+                  <img
+                    v-if="lang == 'en'"
+                    src="@/assets/flags/us.png"
+                    alt=""
+                    srcset=""
+                  />
+                </div>
+                <svg
+                  class="h-5 w-5 text-gray-800"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </button>
+
+              <div
+                v-if="isFlagOpen == true"
+                class="
+                  absolute
+                  pt-1
+                  w-full
+                  bg-custom-field
+                  z-20
+                  rounded-b-md
+                  space-y-1
+                "
+              >
+                <hr />
+                <div
+                  @click="lang = 'id'"
+                  class="
+                    flex flex-row
+                    px-1
+                    border-r-4
+                    bg-custom-field
+                    hover:border-green-500
+                  "
+                >
+                  <img
+                    src="@/assets/flags/id.png"
+                    alt=""
+                    srcset=""
+                    class="w-6 h-6"
+                  />
+                  <span class="pl-1">ID</span>
+                </div>
+                <hr />
+                <div
+                  @click="lang = 'en'"
+                  class="
+                    flex flex-row
+                    px-1
+                    border-r-4
+                    bg-custom-field
+                    hover:border-green-500
+                  "
+                >
+                  <img
+                    src="@/assets/flags/us.png"
+                    alt=""
+                    srcset=""
+                    class="w-6 h-6"
+                  />
+                  <span class="pl-1">EN</span>
+                </div>
+                <hr class="invisible" />
+              </div>
+            </div>
+
+            <button
+              @click="onCopy"
+              class="w-full font-bold py-2 rounded-md bg-custom-field"
+            >
+              Copy to Clipboard
+            </button>
+            <button
+              class="
+                w-full
+                text-custom-field
+                font-bold
+                py-2
+                rounded-md
+                bg-red-500
+              "
+              @click="note = ''"
+            >
+              Clear Text
+            </button>
+          </div>
+        </div>
+        <span class="fixed bottom-0 text-custom-field"
+          >Copyright @2021 RDanang</span
+        >
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-
 export default {
   name: "App",
-  components: {
-    HelloWorld,
+  data() {
+    return {
+      isListening: false,
+      isFlagOpen: false,
+      lang: "id",
+      note: "",
+      recognition: null,
+    };
+  },
+  mounted() {
+    this.config();
+  },
+  methods: {
+    config() {
+      let SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+      this.recognition = new SpeechRecognition();
+      this.recognition.continuous = true;
+      this.recognition.onresult = this.bindResult;
+    },
+
+    onListen() {
+      if (this.isListening == false) {
+        this.recognition.lang = "id-ID";
+        this.recognition.start();
+        this.isListening = true;
+      } else {
+        this.recognition.stop();
+        this.isListening = false;
+      }
+    },
+
+    bindResult(event) {
+      // event is a SpeechRecognitionEvent object.
+      // It holds all the lines we have captured so far.
+      // We only need the current one.
+      let current = event.resultIndex;
+      // Get a transcript of what was said.
+      let transcript = event.results[current][0].transcript;
+      this.note += transcript;
+
+      this.recognition.speechend = function (event) {
+        if (event.error == "no-speech") {
+          this.$toasted.info(
+            "You're silence for a while, record will be paused, and start by it self"
+          );
+        }
+      };
+
+      this.recognition.onerror = function (event) {
+        if (event.error == "no-speech") {
+          this.$toasted.error("No speech was detected. Try again.");
+        }
+      };
+    },
+
+    onCopy() {
+      this.$refs.noteref.select();
+      document.execCommand("copy");
+      this.clearSelection();
+      this.$toasted.success("Coppied to Clipboard!");
+    },
+
+    clearSelection() {
+      if (window.getSelection) {
+        window.getSelection().removeAllRanges();
+      } else if (document.selection) {
+        document.selection.empty();
+      }
+    },
   },
 };
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style scoped></style>
