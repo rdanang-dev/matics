@@ -38,108 +38,123 @@
               {{ isListening ? "Stop" : "Start" }}
             </button>
           </div>
-          <div class="flex flex-row space-x-3 px-2 pt-2">
-            <div class="relative">
-              <button
-                @click.stop="isFlagOpen = !isFlagOpen"
-                class="
-                  relative
-                  z-10
-                  flex
-                  bg-custom-field
-                  p-2
-                  focus:outline-none
-                "
-                :class="isFlagOpen == true ? ['rounded-t-md'] : ['rounded-md']"
-              >
-                <div class="w-6 h-6">
-                  <img
-                    v-if="lang == 'id'"
-                    src="@/assets/flags/id.png"
-                    alt=""
-                    srcset=""
-                  />
-                  <img
-                    v-if="lang == 'en'"
-                    src="@/assets/flags/us.png"
-                    alt=""
-                    srcset=""
-                  />
-                </div>
-                <svg
-                  class="h-5 w-5 text-gray-800"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
+          <div class="flex flex-col lg:flex-row lg:space-x-2 px-2 lg:pt-2">
+            <div class="flex flex-row space-x-2 py-2 lg:py-0 max-w-full">
+              <div class="relative">
+                <button
+                  @click.stop="
+                    isListening == false ? (isFlagOpen = !isFlagOpen) : ''
+                  "
+                  class="
+                    relative
+                    flex
+                    z-10
+                    bg-custom-field
+                    p-2
+                    focus:outline-none
+                  "
+                  :class="
+                    isFlagOpen == true ? ['rounded-t-md'] : ['rounded-md']
+                  "
                 >
-                  <path
-                    fill-rule="evenodd"
-                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </button>
+                  <div class="w-6 h-6">
+                    <img
+                      v-if="lang == 'id-ID'"
+                      src="@/assets/flags/id.png"
+                      alt=""
+                      srcset=""
+                    />
+                    <img
+                      v-if="lang == 'en-US'"
+                      src="@/assets/flags/us.png"
+                      alt=""
+                      srcset=""
+                    />
+                  </div>
+                  <svg
+                    class="h-5 w-5 text-gray-800"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
 
-              <div
-                v-if="isFlagOpen == true"
-                class="
-                  absolute
-                  pt-1
-                  w-full
-                  bg-custom-field
-                  z-20
-                  rounded-b-md
-                  space-y-1
-                "
-              >
-                <hr />
                 <div
-                  @click="lang = 'id'"
+                  v-if="isFlagOpen == true"
                   class="
-                    flex flex-row
-                    px-1
-                    border-r-4
+                    absolute
+                    pt-1
+                    w-full
                     bg-custom-field
-                    hover:border-green-500
+                    z-20
+                    rounded-b-md
+                    space-y-1
                   "
                 >
-                  <img
-                    src="@/assets/flags/id.png"
-                    alt=""
-                    srcset=""
-                    class="w-6 h-6"
-                  />
-                  <span class="pl-1">ID</span>
+                  <hr />
+                  <div
+                    @click="changeLang('id-ID')"
+                    class="
+                      flex flex-row
+                      px-1
+                      border-r-4
+                      bg-custom-field
+                      hover:border-green-500
+                    "
+                  >
+                    <img
+                      src="@/assets/flags/id.png"
+                      alt=""
+                      srcset=""
+                      class="w-6 h-6"
+                    />
+                    <span class="pl-1">ID</span>
+                  </div>
+                  <hr />
+                  <div
+                    @click="changeLang('en-US')"
+                    class="
+                      flex flex-row
+                      px-1
+                      border-r-4
+                      bg-custom-field
+                      hover:border-green-500
+                    "
+                  >
+                    <img
+                      src="@/assets/flags/us.png"
+                      alt=""
+                      srcset=""
+                      class="w-6 h-6"
+                    />
+                    <span class="pl-1">EN</span>
+                  </div>
+                  <hr class="invisible" />
                 </div>
-                <hr />
-                <div
-                  @click="lang = 'en'"
-                  class="
-                    flex flex-row
-                    px-1
-                    border-r-4
-                    bg-custom-field
-                    hover:border-green-500
-                  "
-                >
-                  <img
-                    src="@/assets/flags/us.png"
-                    alt=""
-                    srcset=""
-                    class="w-6 h-6"
-                  />
-                  <span class="pl-1">EN</span>
-                </div>
-                <hr class="invisible" />
               </div>
-            </div>
 
-            <button
-              @click="onCopy"
-              class="w-full font-bold py-2 rounded-md bg-custom-field"
-            >
-              Copy to Clipboard
-            </button>
+              <button
+                @click="onCopy"
+                class="
+                  flex
+                  min-w-max
+                  flex-grow
+                  font-bold
+                  py-2
+                  px-5
+                  rounded-md
+                  bg-custom-field
+                "
+              >
+                Copy Text
+              </button>
+            </div>
             <button
               class="
                 w-full
@@ -170,7 +185,7 @@ export default {
     return {
       isListening: false,
       isFlagOpen: false,
-      lang: "id",
+      lang: "id-ID",
       note: "",
       recognition: null,
     };
@@ -183,13 +198,19 @@ export default {
       let SpeechRecognition =
         window.SpeechRecognition || window.webkitSpeechRecognition;
       this.recognition = new SpeechRecognition();
+      this.recognition.lang = "id-ID";
       this.recognition.continuous = true;
+      this.recognition.interimResults = true;
       this.recognition.onresult = this.bindResult;
+    },
+
+    changeLang(lang) {
+      this.lang = lang;
+      this.recognition.lang = lang;
     },
 
     onListen() {
       if (this.isListening == false) {
-        this.recognition.lang = "id-ID";
         this.recognition.start();
         this.isListening = true;
       } else {
@@ -202,23 +223,26 @@ export default {
       // event is a SpeechRecognitionEvent object.
       // It holds all the lines we have captured so far.
       // We only need the current one.
-      let current = event.resultIndex;
+      // let current = event.resultIndex;
       // Get a transcript of what was said.
-      let transcript = event.results[current][0].transcript;
-      this.note += transcript;
+      // let transcript = event.results[current][0].transcript;
+      // this.note += transcript;
 
-      this.recognition.speechend = function (event) {
-        if (event.error == "no-speech") {
-          this.$toasted.info(
-            "You're silence for a while, record will be paused, and start by it self"
-          );
+      // Loop through the results from the speech recognition object.
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        // If the result item is Final, add it to Final Transcript, Else add it to Interim transcript
+        if (event.results[i].isFinal) {
+          this.note += event.results[i][0].transcript;
         }
+        console.log(event.results[i][0].transcript);
+      }
+
+      this.recognition.onend = function () {
+        this.isListening = false;
       };
 
       this.recognition.onerror = function (event) {
-        if (event.error == "no-speech") {
-          this.$toasted.error("No speech was detected. Try again.");
-        }
+        console.log(event);
       };
     },
 
