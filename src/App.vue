@@ -7,7 +7,7 @@
       <div class="flex flex-col justify-center items-center">
         <span class="text-6xl text-white">Matics</span>
         <span class="text-green-500 pb-4">Mager Ngetics</span>
-        <div class="flex flex-col w-1/2">
+        <div class="flex flex-col w-10/12 lg:w-1/2">
           <textarea
             ref="noteref"
             v-model="note"
@@ -25,9 +25,18 @@
             "
           >
           </textarea>
-          <div class="px-2 pt-3">
+          <div class="px-2">
             <button
-              class="w-full text-white font-bold py-2 rounded-md"
+              class="
+                hidden
+                lg:block
+                w-full
+                text-white
+                font-bold
+                lg:mt-3
+                py-2
+                rounded-md
+              "
               :class="
                 isListening
                   ? ['bg-red-500', 'hover:bg-red-400']
@@ -37,137 +46,158 @@
             >
               {{ isListening ? "Stop" : "Start" }}
             </button>
-          </div>
-          <div class="flex flex-col lg:flex-row lg:space-x-2 px-2 lg:pt-2">
-            <div class="flex flex-row space-x-2 py-2 lg:py-0 max-w-full">
-              <div class="relative">
-                <button
-                  @click.stop="
-                    isListening == false ? (isFlagOpen = !isFlagOpen) : ''
-                  "
-                  class="
-                    relative
-                    flex
-                    z-10
-                    bg-custom-field
-                    p-2
-                    focus:outline-none
-                  "
-                  :class="
-                    isFlagOpen == true ? ['rounded-t-md'] : ['rounded-md']
-                  "
-                >
-                  <div class="w-6 h-6">
-                    <img
-                      v-if="lang == 'id-ID'"
-                      src="@/assets/flags/id.png"
-                      alt=""
-                      srcset=""
-                    />
-                    <img
-                      v-if="lang == 'en-US'"
-                      src="@/assets/flags/us.png"
-                      alt=""
-                      srcset=""
-                    />
-                  </div>
-                  <svg
-                    class="h-5 w-5 text-gray-800"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
+            <div class="flex flex-col lg:flex-row lg:space-x-2 lg:pt-2">
+              <div class="flex flex-row space-x-2 py-2 lg:py-0">
+                <div class="relative">
+                  <button
+                    @click.stop="
+                      isListening == false ? (isFlagOpen = !isFlagOpen) : ''
+                    "
+                    class="
+                      relative
+                      flex
+                      z-10
+                      bg-custom-field
+                      p-2
+                      focus:outline-none
+                    "
+                    :class="
+                      isFlagOpen == true ? ['rounded-t-md'] : ['rounded-md']
+                    "
                   >
-                    <path
-                      fill-rule="evenodd"
-                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </button>
+                    <div class="w-6 h-6">
+                      <img
+                        v-if="lang == 'id-ID'"
+                        src="@/assets/flags/id.png"
+                        alt=""
+                        srcset=""
+                      />
+                      <img
+                        v-if="lang == 'en-US'"
+                        src="@/assets/flags/us.png"
+                        alt=""
+                        srcset=""
+                      />
+                    </div>
+                    <svg
+                      class="h-5 w-5 text-gray-800"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </button>
 
-                <div
-                  v-if="isFlagOpen == true"
+                  <div
+                    v-if="isFlagOpen == true"
+                    class="
+                      absolute
+                      pt-1
+                      w-full
+                      bg-custom-field
+                      z-20
+                      rounded-b-md
+                      space-y-1
+                    "
+                  >
+                    <hr />
+                    <div
+                      @click="changeLang('id-ID')"
+                      class="
+                        flex flex-row
+                        px-1
+                        border-r-4
+                        bg-custom-field
+                        hover:border-green-500
+                      "
+                    >
+                      <img
+                        src="@/assets/flags/id.png"
+                        alt=""
+                        srcset=""
+                        class="w-6 h-6"
+                      />
+                      <span class="pl-1">ID</span>
+                    </div>
+                    <hr />
+                    <div
+                      @click="changeLang('en-US')"
+                      class="
+                        flex flex-row
+                        px-1
+                        border-r-4
+                        bg-custom-field
+                        hover:border-green-500
+                      "
+                    >
+                      <img
+                        src="@/assets/flags/us.png"
+                        alt=""
+                        srcset=""
+                        class="w-6 h-6"
+                      />
+                      <span class="pl-1">EN</span>
+                    </div>
+                    <hr class="invisible" />
+                  </div>
+                </div>
+
+                <button
+                  @click="onCopy"
                   class="
-                    absolute
-                    pt-1
-                    w-full
+                    font-bold
+                    py-2
+                    rounded-md
                     bg-custom-field
-                    z-20
-                    rounded-b-md
-                    space-y-1
+                    justify-center
+                    w-full
+                    lg:min-w-max lg:px-2
                   "
                 >
-                  <hr />
-                  <div
-                    @click="changeLang('id-ID')"
-                    class="
-                      flex flex-row
-                      px-1
-                      border-r-4
-                      bg-custom-field
-                      hover:border-green-500
-                    "
-                  >
-                    <img
-                      src="@/assets/flags/id.png"
-                      alt=""
-                      srcset=""
-                      class="w-6 h-6"
-                    />
-                    <span class="pl-1">ID</span>
-                  </div>
-                  <hr />
-                  <div
-                    @click="changeLang('en-US')"
-                    class="
-                      flex flex-row
-                      px-1
-                      border-r-4
-                      bg-custom-field
-                      hover:border-green-500
-                    "
-                  >
-                    <img
-                      src="@/assets/flags/us.png"
-                      alt=""
-                      srcset=""
-                      class="w-6 h-6"
-                    />
-                    <span class="pl-1">EN</span>
-                  </div>
-                  <hr class="invisible" />
-                </div>
+                  Copy Text
+                </button>
               </div>
 
               <button
-                @click="onCopy"
                 class="
-                  flex
-                  min-w-max
-                  flex-grow
+                  lg:hidden lg:mb-0
+                  mb-2
+                  block
+                  w-full
+                  text-white
                   font-bold
                   py-2
-                  px-5
                   rounded-md
-                  bg-custom-field
                 "
+                :class="
+                  isListening
+                    ? ['bg-red-500', 'hover:bg-red-400']
+                    : ['bg-green-500', 'hover:bg-green-400']
+                "
+                @click="onListen"
               >
-                Copy Text
+                {{ isListening ? "Stop" : "Start" }}
+              </button>
+
+              <button
+                class="
+                  w-full
+                  text-custom-field
+                  font-bold
+                  py-2
+                  rounded-md
+                  bg-red-500
+                "
+                @click="note = ''"
+              >
+                Clear Text
               </button>
             </div>
-            <button
-              class="
-                w-full
-                text-custom-field
-                font-bold
-                py-2
-                rounded-md
-                bg-red-500
-              "
-              @click="note = ''"
-            >
-              Clear Text
-            </button>
           </div>
         </div>
         <span class="fixed bottom-0 text-custom-field"
