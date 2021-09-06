@@ -1,24 +1,3 @@
-# matics
+# Matics
 
-## Project setup
-```
-yarn install
-```
-
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Matics (Mager Ngetics) made with Native Web Speech API, build with vuejs and tailwindCSS
